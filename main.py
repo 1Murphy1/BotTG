@@ -41,7 +41,18 @@ async def news(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         log_message(user_id, message)
 
 
+async def history(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    user_id = update.message.from_user.id
+    message = f"User: {update.message.text}"
+    log_message(user_id, message)
 
+    reply_text = ("Tesla, Inc. - американская компания, производитель электромобилей и решений для хранения электроэнергии. "
+                  "Основана в 2003 году Мартином Эберхардом и Марком Тарпеннингом, в дальнейшем к ним присоединились Илон Маск, JB Straubel и Иан Райт. "
+                  "Компания специализируется на производстве электромобилей, солнечных панелей и аккумуляторов для дома и промышленности.")
+    await update.message.reply_text(reply_text)
+    
+    message = f"Bot: {reply_text}"
+    log_message(user_id, message)
 
 
 # Основная функция для запуска бота
@@ -56,6 +67,7 @@ def main():
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("news", news))
 
+    application.add_handler(CommandHandler("history", history))
     # Запуск бота
     application.run_polling()
 
