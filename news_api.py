@@ -16,6 +16,7 @@ def get_news():
         data = response.json()
         return data['articles']
     else:
+        
         return None
 
 def translate_news(articles):

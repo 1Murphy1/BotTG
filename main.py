@@ -2,6 +2,7 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 from news_api import get_news, translate_news
 from login import log_message  # Импортируем функцию логирования
+from stock_scraper import get_stock_price
 
 # Команда /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -54,6 +55,25 @@ async def history(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     message = f"Bot: {reply_text}"
     log_message(user_id, message)
 
+async def stock(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    user_id = update.message.from_user.id
+    message = f"User: {update.message.text}"
+    log_message(user_id, message)
+
+    stock_price = get_stock_price()
+    if stock_price:
+        reply_text = f"Актуальная стоимость акций Tesla: ${stock_price}"
+        await update.message.reply_text(reply_text)
+        
+        message = f"Bot: {reply_text}"
+        log_message(user_id, message)
+    else:
+        reply_text = 'Ошибка при получении стоимости акций.'
+        await update.message.reply_text(reply_text)
+        
+        message = f"Bot: {reply_text}"
+        log_message(user_id, message)  
+
 
 # Основная функция для запуска бота
 def main():
@@ -66,8 +86,9 @@ def main():
     # Регистрация команд
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("news", news))
-
     application.add_handler(CommandHandler("history", history))
+    application.add_handler(CommandHandler("stock", stock))
+    
     # Запуск бота
     application.run_polling()
 
