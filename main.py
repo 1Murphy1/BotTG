@@ -22,18 +22,27 @@ async def news(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     message = f"User: {update.message.text}"
     log_message(user_id, message)
 
+    if "news_cache" not in context.user_data:
+        context.user_data["news_cache"] = []
+
     articles = get_news()
     if articles:
         translated_articles = translate_news(articles)
-        sent_titles = set()
+        new_articles = [article for article in translated_articles if article['title'] not in context.user_data["news_cache"]]
 
-        for article in translated_articles:
-            if article['title'] not in sent_titles:
+        if new_articles:
+            for article in new_articles[:5]:
                 await update.message.reply_text(article['title'])
-                sent_titles.add(article['title'])
+                context.user_data["news_cache"].append(article['title'])
                 
                 message = f"Bot: {article['title']}"
                 log_message(user_id, message)
+        else:
+            reply_text = 'Нет новых новостей. Попробуйте позже.'
+            await update.message.reply_text(reply_text)
+            
+            message = f"Bot: {reply_text}"
+            log_message(user_id, message)
     else:
         reply_text = 'Ошибка при получении новостей.'
         await update.message.reply_text(reply_text)

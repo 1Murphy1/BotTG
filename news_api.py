@@ -6,7 +6,8 @@ def get_news():
     news_url = 'https://newsapi.org/v2/everything'
     news_params = {
         'q': 'tesla',
-        'from': '2024-05-05',
+        'from': '2024-05-15',
+        'to': '2024-05-20',
         'sortBy': 'publishedAt',
         'apiKey': '3e80c401d12e43c38d803f68eca80e01'
     }
@@ -16,7 +17,6 @@ def get_news():
         data = response.json()
         return data['articles']
     else:
-        
         return None
 
 def translate_news(articles):
