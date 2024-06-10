@@ -20,12 +20,12 @@ def get_news():
         return None
 
 def translate_news(articles):
-    translator = GoogleTranslator(source='auto', target='ru')
-    translated_articles = []
+    translator = GoogleTranslator(source='auto', target='ru') #автоопределение исходного языка 
+    translated_articles = [] #для хранения переведенных статей
 
     for article in articles:
-        title = article['title']
-        translated_title = translator.translate(title)
+        title = article['title'] 
+        translated_title = translator.translate(title)  
         article['title'] = translated_title
         translated_articles.append(article)
     return translated_articles

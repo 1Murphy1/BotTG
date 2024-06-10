@@ -10,7 +10,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     message = f"User: {update.message.text}"
     log_message(user_id, message)
 
-    reply_text = 'Привет! Я бот, который предоставляет последние новости о Tesla.'
+    available_commands = "Доступные команды: /news, /history, /stock"
+
+    reply_text = f"Привет! Я бот, который предоставляет последние новости о Tesla.\n{available_commands}"
     await update.message.reply_text(reply_text)
 
     message = f"Bot: {reply_text}"
@@ -29,11 +31,12 @@ async def news(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if articles:
         translated_articles = translate_news(articles)
         new_articles = [article for article in translated_articles if article['title'] not in context.user_data["news_cache"]]
+        #отбирает только то, что не находится в кэше 
 
         if new_articles:
             for article in new_articles[:5]:
                 await update.message.reply_text(article['title'])
-                context.user_data["news_cache"].append(article['title'])
+                context.user_data["news_cache"].append(article['title']) #не отправлялся снова
                 
                 message = f"Bot: {article['title']}"
                 log_message(user_id, message)
@@ -50,7 +53,7 @@ async def news(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         message = f"Bot: {reply_text}"
         log_message(user_id, message)
 
-
+#Команда /history
 async def history(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user_id = update.message.from_user.id
     message = f"User: {update.message.text}"
@@ -64,6 +67,7 @@ async def history(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     message = f"Bot: {reply_text}"
     log_message(user_id, message)
 
+#Команда /stock
 async def stock(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user_id = update.message.from_user.id
     message = f"User: {update.message.text}"
