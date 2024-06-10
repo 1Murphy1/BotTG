@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 from news_api import get_news, translate_news
-from login import log_message  # Импортируем функцию логирования
+from login import log_message  
 from stock_scraper import get_stock_price
 
 # Команда /start
