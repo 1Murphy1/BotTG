@@ -30,11 +30,4 @@ def translate_news(articles):
         translated_articles.append(article)
     return translated_articles
 
-# Пример использования функций
-news = get_news()
-if news:
-    translated_news = translate_news(news)
-    for article in translated_news:
-        print(article['title'])
-else:
-    print("Не удалось получить новости.")
+
