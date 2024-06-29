@@ -3,6 +3,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 from news_api import get_news, translate_news
 from login import log_message  
 from stock_scraper import get_stock_price
+from tokens import bot_token
 
 # Команда /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -90,8 +91,6 @@ async def stock(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 # Основная функция для запуска бота
 def main():
-    # Токен вашего бота
-    bot_token = '6532115800:AAGYC6CA_MlNPK1rHNfmjxfMQFc3ovvSRW4'
 
     # Создание приложения
     application = Application.builder().token(bot_token).build()
